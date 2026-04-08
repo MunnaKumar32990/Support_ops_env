@@ -153,7 +153,7 @@ api:
 entrypoints:
   env_class: "env.SupportOpsEnv"
   inference_script: "inference.py"
-  app: "app.py"
+  app: "server/app.py"
 
 # ── Runtime ───────────────────────────────────────────────────────────────────
 runtime:
