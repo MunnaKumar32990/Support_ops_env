@@ -1,3 +1,12 @@
+---
+title: SupportOpsEnv
+emoji: 🔧
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+app_port: 7860
+---
 # SupportOpsEnv
 
 > **Meta OpenEnv Hackathon Submission**
