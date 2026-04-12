@@ -74,7 +74,7 @@ def grade(
         ground_truth: reference dict with same keys + 'valid_tones', 'requires_escalation'
 
     Returns:
-        float in [0.0, 1.0] (after penalties, may be slightly below 0; clamped to 0)
+        float in (0.0, 1.0)
     """
     score = 0.0
     ref_tone = ground_truth.get("tone", "")
@@ -120,8 +120,7 @@ def grade(
     if len(resolution_steps) < 20:
         score -= 0.10
 
-    # Clamp to [0.001, 0.999] for strict limits
-    return round(max(0.001, min(0.999, score)), 4)
+    return round(max(0.1, min(0.95, score)), 4)
 
 
 def grade_batch(predictions: list[dict], samples: list[dict]) -> dict:

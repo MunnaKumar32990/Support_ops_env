@@ -29,26 +29,21 @@ def grade(predicted_label: str, ground_truth_label: str) -> float:
         ground_truth_label: The correct label from the dataset.
 
     Returns:
-        float in [−0.2, 1.0]
+        float in (0.0, 1.0)
     """
-    # Normalize
     predicted_label = str(predicted_label).strip().lower()
     ground_truth_label = str(ground_truth_label).strip().lower()
 
-    # Invalid label penalty (changed to 0.001 to keep strictly > 0)
     if predicted_label not in VALID_LABELS:
-        return 0.001
+        return 0.1
 
-    # Exact match (changed to 0.999 strictly < 1)
     if predicted_label == ground_truth_label:
-        return 0.999
+        return 0.95
 
-    # Semantic proximity (partial credit)
     if (predicted_label, ground_truth_label) in CLOSE_PAIRS:
-        return 0.50
+        return 0.5
 
-    # Wrong (changed to 0.001)
-    return 0.001
+    return 0.1
 
 
 def grade_batch(predictions: list[str], samples: list[dict]) -> dict:

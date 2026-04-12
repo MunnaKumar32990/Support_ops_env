@@ -1,119 +1,21 @@
 name: SupportOpsEnv
 version: "1.0.0"
-description: >
-  A realistic customer support operations environment that challenges agents
-  across three tasks of increasing difficulty: email classification, ticket
-  prioritization, and structured response generation.
+description: A realistic customer support operations environment
+author: MetaHack Team
+license: MIT
 
-author: "MetaHack Team"
-license: "MIT"
-
-# ── Task Registry ──────────────────────────────────────────────────────────────
 tasks:
-  - id: "email_classification"
-    name: "Email Classification"
-    difficulty: "easy"
-    description: >
-      Given a customer email, classify it into one of three categories:
-      billing, technical, or general.
-    grader: "graders.grader_easy:grade"
-
-  - id: "ticket_prioritization"
-    name: "Ticket Prioritization"
-    difficulty: "medium"
-    description: >
-      Given a support ticket and urgency signals, assign a priority level:
-      low, medium, or high.
-    grader: "graders.grader_medium:grade"
-
-  - id: "response_generation"
-    name: "Response Generation"
-    difficulty: "hard"
-    description: >
-      Generate a structured JSON response to a customer complaint including
-      tone, resolution steps, and escalation decision.
-    grader: "graders.grader_hard:grade"
-
-# ── Environment Settings ───────────────────────────────────────────────────────
-environment:
-  max_steps_per_task: 30
-  loop_threshold: 5
-  dense_rewards: true
-
-  penalties:
-    invalid_action: -0.25
-    repeated_action: -0.15
-    long_loop: -0.10
-    max_steps_exceeded: -0.25
-
-  bonuses:
-    perfect_score: 0.05
-
-# ── Scoring ────────────────────────────────────────────────────────────────────
-scoring:
-  method: mean
-  range: [0.0, 1.0]
-  per_task_weight:
-    email_classification: 1.0
-    ticket_prioritization: 1.0
-    response_generation: 1.0
-
-# ── Observation / Action / Reward Models ──────────────────────────────────────
-models:
-  observation:
-    class: "env.Observation"
-    fields:
-      - task_name: string
-      - task_difficulty: string
-      - step_number: integer
-      - sample_index: integer
-      - total_samples: integer
-      - payload: object
-      - done: boolean
-      - metadata: object
-
-  action:
-    class: "env.Action"
-    fields:
-      - task_name: string
-      - payload: object
-
-  reward:
-    class: "env.Reward"
-    fields:
-      - raw_score: float
-      - shaped_reward: float
-      - penalties_applied: list[string]
-      - bonuses_applied: list[string]
-      - cumulative_score: float
-
-# ── API ───────────────────────────────────────────────────────────────────────
-api:
-  reset:
-    description: "Reset the environment. Returns initial Observation."
-    returns: Observation
-
-  step:
-    description: "Execute one action. Returns (Observation, Reward, done, info)."
-    input: Action
-    returns:
-      - Observation
-      - Reward
-      - done: boolean
-      - info: object
-
-  state:
-    description: "Return current environment state as dict."
-    returns: object
-
-# ── Entrypoints ───────────────────────────────────────────────────────────────
-entrypoints:
-  env_class: "env.SupportOpsEnv"
-  inference_script: "inference.py"
-  app: "server/app.py"
-
-# ── Runtime ───────────────────────────────────────────────────────────────────
-runtime:
-  python: ">=3.10"
-  dependencies_file: "requirements.txt"
-  docker: "Dockerfile"
+  - id: task_easy
+    name: Email Classification
+    difficulty: easy
+    grader: graders.grader_easy:grade
+  
+  - id: task_medium
+    name: Ticket Prioritization
+    difficulty: medium
+    grader: graders.grader_medium:grade
+  
+  - id: task_hard
+    name: Response Generation
+    difficulty: hard
+    grader: graders.grader_hard:grade

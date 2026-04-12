@@ -26,14 +26,13 @@ def grade(predicted_priority: str, ground_truth_priority: str) -> float:
         ground_truth_priority: The correct priority from the dataset.
 
     Returns:
-        float in [−0.5, 1.0]  (clamped to [-0.5, 1.0])
+        float in (0.0, 1.0)
     """
     predicted_priority = str(predicted_priority).strip().lower()
     ground_truth_priority = str(ground_truth_priority).strip().lower()
 
-    # Invalid label penalty
     if predicted_priority not in VALID_PRIORITIES:
-        return -0.2
+        return 0.1
 
     pred_val = PRIORITY_SCORE[predicted_priority]
     gt_val = PRIORITY_SCORE[ground_truth_priority]
@@ -41,12 +40,10 @@ def grade(predicted_priority: str, ground_truth_priority: str) -> float:
     distance = abs(pred_val - gt_val)
     base_score = 1.0 - (distance / MAX_DISTANCE)
 
-    # Penalty for underestimating high-priority tickets
     if ground_truth_priority == "high" and predicted_priority != "high":
         base_score -= UNDERESTIMATE_PENALTY
 
-    # Clamp to [0.001, 0.999] for strict limits
-    return round(max(0.001, min(0.999, base_score)), 4)
+    return round(max(0.1, min(0.95, base_score)), 4)
 
 
 def grade_batch(predictions: list[str], samples: list[dict]) -> dict:
