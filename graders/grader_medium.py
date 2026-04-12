@@ -45,8 +45,8 @@ def grade(predicted_priority: str, ground_truth_priority: str) -> float:
     if ground_truth_priority == "high" and predicted_priority != "high":
         base_score -= UNDERESTIMATE_PENALTY
 
-    # Clamp to [-0.5, 1.0]
-    return round(max(-0.5, min(1.0, base_score)), 4)
+    # Clamp to [0.001, 0.999] for strict limits
+    return round(max(0.001, min(0.999, base_score)), 4)
 
 
 def grade_batch(predictions: list[str], samples: list[dict]) -> dict:

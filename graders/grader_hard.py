@@ -120,8 +120,8 @@ def grade(
     if len(resolution_steps) < 20:
         score -= 0.10
 
-    # Clamp to [0.0, 1.0]
-    return round(max(0.0, min(1.0, score)), 4)
+    # Clamp to [0.001, 0.999] for strict limits
+    return round(max(0.001, min(0.999, score)), 4)
 
 
 def grade_batch(predictions: list[dict], samples: list[dict]) -> dict:

@@ -35,20 +35,20 @@ def grade(predicted_label: str, ground_truth_label: str) -> float:
     predicted_label = str(predicted_label).strip().lower()
     ground_truth_label = str(ground_truth_label).strip().lower()
 
-    # Invalid label penalty
+    # Invalid label penalty (changed to 0.001 to keep strictly > 0)
     if predicted_label not in VALID_LABELS:
-        return -0.2
+        return 0.001
 
-    # Exact match
+    # Exact match (changed to 0.999 strictly < 1)
     if predicted_label == ground_truth_label:
-        return 1.0
+        return 0.999
 
     # Semantic proximity (partial credit)
     if (predicted_label, ground_truth_label) in CLOSE_PAIRS:
-        return 0.5
+        return 0.50
 
-    # Wrong
-    return 0.0
+    # Wrong (changed to 0.001)
+    return 0.001
 
 
 def grade_batch(predictions: list[str], samples: list[dict]) -> dict:
