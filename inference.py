@@ -57,12 +57,7 @@ client = OpenAI(
 # ─────────────────────────────────────────────────────────────────────────────
 
 def log_start(env_name: str, model: str, base_url: str) -> None:
-    print(json.dumps({
-        "type": "START",
-        "env":  env_name,
-        "model": model,
-        "base_url": base_url,
-    }), flush=True)
+    print(f"[START] task={env_name} model={model} base_url={base_url}", flush=True)
 
 
 def log_step(
@@ -78,28 +73,20 @@ def log_step(
     penalties: list,
     bonuses: list,
 ) -> None:
-    print(json.dumps({
-        "type":          "STEP",
-        "step":          step,
-        "task":          task,
-        "difficulty":    difficulty,
-        "sample":        f"{sample}/{total}",
-        "action":        action,
-        "raw_score":     round(raw_score, 4),
-        "shaped_reward": round(shaped_reward, 4),
-        "cumulative":    round(cumulative, 4),
-        "penalties":     penalties,
-        "bonuses":       bonuses,
-    }), flush=True)
+    print(
+        f"[STEP] step={step} task={task} difficulty={difficulty} "
+        f"sample={sample}/{total} reward={round(shaped_reward, 4)} "
+        f"raw_score={round(raw_score, 4)} cumulative={round(cumulative, 4)}",
+        flush=True,
+    )
 
 
 def log_end(task_scores: dict, overall_score: float, total_steps: int) -> None:
-    print(json.dumps({
-        "type":          "END",
-        "task_scores":   task_scores,
-        "overall_score": round(overall_score, 4),
-        "total_steps":   total_steps,
-    }), flush=True)
+    scores_str = " ".join(f"{k}={v}" for k, v in task_scores.items())
+    print(
+        f"[END] {scores_str} score={round(overall_score, 4)} steps={total_steps}",
+        flush=True,
+    )
 
 
 # ─────────────────────────────────────────────────────────────────────────────
