@@ -16,6 +16,7 @@ tasks:
     description: >
       Given a customer email, classify it into one of three categories:
       billing, technical, or general.
+    grader: "graders.grader_easy:grade"
     observation_schema:
       task_id: string
       email_id: string
@@ -37,6 +38,7 @@ tasks:
     description: >
       Given a support ticket and urgency signals, assign a priority level:
       low, medium, or high.
+    grader: "graders.grader_medium:grade"
     observation_schema:
       task_id: string
       ticket_id: string
@@ -58,6 +60,7 @@ tasks:
     description: >
       Generate a structured JSON response to a customer complaint including
       tone, resolution steps, and escalation decision.
+    grader: "graders.grader_hard:grade"
     observation_schema:
       task_id: string
       complaint_id: string
